@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D4 Enchanting Cost</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+      font-family: Arial;
+      font-size: 16px;
+      color: #222;
+      background: #f5f5f5;
+    }
+
+    .dark {
+      background: #000;
+      color: #fff;
+    }
+
+    a, a:hover, a:active, a:visited {
+      color: #333;
+    }
+    .dark a {
+      color: #f0f0f0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      padding: 0;
+    }
+
+    header {
+      background: #e0e0e0;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      padding: .5rem 1rem;
+      display: flex;
+      align-items: center;
+    }
+    header .title {
+      font-size: 18px;
+      text-transform: capitalize;
+      margin: 0;
+      margin-right: .5rem;
+    }
+    header .credit {
+      font-size: 14px;
+    }
+    .dark header {
+      background: #333;
+      border-bottom-color: #555;
+    }
+
+    #wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 1rem;
+    }
+
+    .form {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .mb {
+      margin-bottom: 0.5rem;
+    }
+
+    label {
+      display: block;
+    }
+
+    table,
+    input {
+      width: 100%;
+    }
+
+    input {
+      padding: 0.4rem;
+      background: #fff;
+      border: 1px solid #ccc;
+      outline: 0;
+      font-size: 2rem;
+    }
+    .dark input {
+      border-color: #555;
+      background: #333;
+      color: #fff;
+    }
+
+    input:focus,
+    input:hover {
+      border: 1px solid #aaa;
+    }
+
+    input:read-only {
+      text-align: center;
+      background: #f5f5f5;
+    }
+
+    .dark input:read-only {
+      background: #333;
+      border-color: transparent;
+    }
+
+    table {
+      border: 2px solid #eee;
+      border-collapse: collapse;
+      overflow-x: auto;
+      word-break: normal;
+    }
+    .dark table {
+      border-color: #555;
+    }
+
+    td,
+    th {
+      border: 1px solid #ddd;
+      padding: 0.25rem 0.5rem;
+      text-align: right;
+    }
+    .dark td,
+    .dark th {
+      border-color: #555;
+    }
+
+    th {
+      background: #e0e0e0;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #d0d0d0;
+      position: sticky;
+      top: 45px;
+    }
+    .dark th {
+      background: #333;
+      border-bottom-color: #777;
+    }
+
+    /* The switch - the box around the slider */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 70px;
+      height: 28px;
+      margin-left: auto;
+    }
+    .switch .text-light,
+    .switch .text-dark {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: #333;
+      display: none;
+    }
+    .switch .text-dark {
+      right: auto;
+      left: 8px;
+      color: #ccc;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+      border-radius: 28px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .25s;
+      transition: .25s;
+      border-radius: 100%;
+    }
+
+    input:checked+.slider {
+      background-color: #555;
+    }
+
+    input:focus+.slider {
+      box-shadow: 0 0 1px #555;
+    }
+
+    input:checked+.slider:before {
+      transform: translateX(40px);
+      background-color: #888;
+    }
+    input:checked+.slider .text-dark,
+    input:not(:checked)+.slider .text-light {
+      display: block;
+    }
+
+    @media screen and (min-width: 1024px) {
+      #wrapper {
+        flex-wrap: nowrap;
+      }
+
+      .form,
+      .table-wrapper {
+        flex: 1;
+        width: auto;
+        margin-bottom: 0;
+      }
+
+      .form {
+        padding-right: 1rem;
+      }
+
+      .table-wrapper {
+        flex: 2;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1 class="title">Enchanting cost calculator</h1>
+    <span class="credit">by <a href="https://github.com/qnts">Qnts</a></span>
+    <label class="switch">
+      <input type="checkbox" id="toggle-dark-mode">
+      <span class="slider">
+        <span class="text-light">Light</span>
+        <span class="text-dark">Dark</span>
+      </span>
+    </label>
+  </header>
+  <div id="wrapper">
+    <div class="form">
+      <div class="mb">
+        <label for="price" class="mb">Item Price</label>
+        <input type="number" min="0" step="1" max="200000" id="price" value="20000" autofocus>
+      </div>
+      <div class="mb">
+        <label for="roll" class="mb">Roll #</label>
+        <input type="number" min="1" step="1" id="roll" value="1">
+      </div>
+      <div class="mb">
+        <label class="mb">Enchanting Cost</label>
+        <input type="text" readonly id="enchanting_cost">
+      </div>
+      <div class="mb">
+        <label class="mb">Cumulative Cost</label>
+        <input type="text" readonly id="gold_spent">
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th><abbr title="Enchanting Cost">E.Cost</abbr> [x]</th>
+            <th><abbr title="Cumulative Cost">C.Cost</abbr> [x]</th>
+            <th>Enchanting Cost</th>
+            <th>Cumulative Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>3</td>
+            <td>3</td>
+            <td>60,000</td>
+            <td>60,000</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>15</td>
+            <td>18</td>
+            <td>300,000</td>
+            <td>360,000</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>18</td>
+            <td>36</td>
+            <td>360,000</td>
+            <td>720,000</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>21</td>
+            <td>57</td>
+            <td>420,000</td>
+            <td>1,140,000</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>24</td>
+            <td>81</td>
+            <td>480,000</td>
+            <td>1,620,000</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>27</td>
+            <td>108</td>
+            <td>540,000</td>
+            <td>2,160,000</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>34.5</td>
+            <td>142.5</td>
+            <td>690,000</td>
+            <td>2,850,000</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>42</td>
+            <td>184.5</td>
+            <td>840,000</td>
+            <td>3,690,000</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>49.5</td>
+            <td>234</td>
+            <td>990,000</td>
+            <td>4,680,000</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>57</td>
+            <td>291</td>
+            <td>1,140,000</td>
+            <td>5,820,000</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>64.5</td>
+            <td>355.5</td>
+            <td>1,290,000</td>
+            <td>7,110,000</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>79.5</td>
+            <td>435</td>
+            <td>1,590,000</td>
+            <td>8,700,000</td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td>94.5</td>
+            <td>529.5</td>
+            <td>1,890,000</td>
+            <td>10,590,000</td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td>109.5</td>
+            <td>639</td>
+            <td>2,190,000</td>
+            <td>12,780,000</td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>124.5</td>
+            <td>763.5</td>
+            <td>2,490,000</td>
+            <td>15,270,000</td>
+          </tr>
+          <tr>
+            <td>16</td>
+            <td>139.5</td>
+            <td>903</td>
+            <td>2,790,000</td>
+            <td>18,060,000</td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td>154.5</td>
+            <td>1057.5</td>
+            <td>3,090,000</td>
+            <td>21,150,000</td>
+          </tr>
+          <tr>
+            <td>18</td>
+            <td>169.5</td>
+            <td>1227</td>
+            <td>3,390,000</td>
+            <td>24,540,000</td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>184.5</td>
+            <td>1411.5</td>
+            <td>3,690,000</td>
+            <td>28,230,000</td>
+          </tr>
+          <tr>
+            <td>20</td>
+            <td>199.5</td>
+            <td>1611</td>
+            <td>3,990,000</td>
+            <td>32,220,000</td>
+          </tr>
+          <tr>
+            <td>21</td>
+            <td>214.5</td>
+            <td>1825.5</td>
+            <td>4,290,000</td>
+            <td>36,510,000</td>
+          </tr>
+          <tr>
+            <td>22</td>
+            <td>237</td>
+            <td>2062.5</td>
+            <td>4,740,000</td>
+            <td>41,250,000</td>
+          </tr>
+          <tr>
+            <td>23</td>
+            <td>259.5</td>
+            <td>2322</td>
+            <td>5,190,000</td>
+            <td>46,440,000</td>
+          </tr>
+          <tr>
+            <td>24</td>
+            <td>282</td>
+            <td>2604</td>
+            <td>5,640,000</td>
+            <td>52,080,000</td>
+          </tr>
+          <tr>
+            <td>25</td>
+            <td>304.5</td>
+            <td>2908.5</td>
+            <td>6,090,000</td>
+            <td>58,170,000</td>
+          </tr>
+          <tr>
+            <td>26</td>
+            <td>327</td>
+            <td>3235.5</td>
+            <td>6,540,000</td>
+            <td>64,710,000</td>
+          </tr>
+          <tr>
+            <td>27</td>
+            <td>349.5</td>
+            <td>3585</td>
+            <td>6,990,000</td>
+            <td>71,700,000</td>
+          </tr>
+          <tr>
+            <td>28</td>
+            <td>372</td>
+            <td>3957</td>
+            <td>7,440,000</td>
+            <td>79,140,000</td>
+          </tr>
+          <tr>
+            <td>29</td>
+            <td>394.5</td>
+            <td>4351.5</td>
+            <td>7,890,000</td>
+            <td>87,030,000</td>
+          </tr>
+          <tr>
+            <td>30</td>
+            <td>417</td>
+            <td>4768.5</td>
+            <td>8,340,000</td>
+            <td>95,370,000</td>
+          </tr>
+          <tr>
+            <td>31</td>
+            <td>439.5</td>
+            <td>5208</td>
+            <td>8,790,000</td>
+            <td>104,160,000</td>
+          </tr>
+          <tr>
+            <td>32</td>
+            <td>462</td>
+            <td>5670</td>
+            <td>9,240,000</td>
+            <td>113,400,000</td>
+          </tr>
+          <tr>
+            <td>33</td>
+            <td>484.5</td>
+            <td>6154.5</td>
+            <td>9,690,000</td>
+            <td>123,090,000</td>
+          </tr>
+          <tr>
+            <td>34</td>
+            <td>507</td>
+            <td>6661.5</td>
+            <td>10,140,000</td>
+            <td>133,230,000</td>
+          </tr>
+          <tr>
+            <td>35</td>
+            <td>529.5</td>
+            <td>7191</td>
+            <td>10,590,000</td>
+            <td>143,820,000</td>
+          </tr>
+          <tr>
+            <td>36</td>
+            <td>552</td>
+            <td>7743</td>
+            <td>11,040,000</td>
+            <td>154,860,000</td>
+          </tr>
+          <tr>
+            <td>37</td>
+            <td>582</td>
+            <td>8325</td>
+            <td>11,640,000</td>
+            <td>166,500,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script>
+    const price = document.getElementById('price');
+    const roll = document.getElementById('roll');
+    const ec = document.getElementById('enchanting_cost');
+    const gs = document.getElementById('gold_spent');
+    const toNumber = text => Number(text.replace(/[,]/g, ''));
+    const formatNumber = number => Math.round(number).toLocaleString('en-US');
+    const rows = document.querySelectorAll('tbody tr');
+    const getColumn = (rowIndex, colIndex) => {
+      let row;
+      if (rowIndex instanceof Element) row = rowIndex;
+      else row = rows[rowIndex];
+      if (!row) return null;
+      if (typeof colIndex === 'number') return row.querySelector(`td:nth-child(${colIndex})`);
+      let index = -1;
+      switch (colIndex) {
+        case 'index':
+          index = 1;
+          break;
+        case 'costMultiplier':
+          index = 2;
+          break;
+        case 'cumulativeCostMultiplier':
+          index = 3;
+          break;
+        case 'rollCost':
+          index = 4;
+          break;
+        case 'cumulativeCost':
+          index = 5;
+          break;
+        default:
+          return {
+            index: getColumn(rowIndex, 1).innerText,
+            costMultiplier: toNumber(getColumn(rowIndex, 2).innerText),
+            cumulativeCostMultiplier: toNumber(getColumn(rowIndex, 3).innerText),
+            rollCost: toNumber(getColumn(rowIndex, 4).innerText),
+            cumulativeCost: toNumber(getColumn(rowIndex, 5).innerText),
+          };
+      }
+      return row.querySelector(`td:nth-child(${index})`);
+    };
+    const calc = () => {
+      let r = Math.abs(Number(roll.value));
+      let p = Math.abs(Number(price.value));
+      if (!p || isNaN(p)) {
+        price.value = 1;
+        p = 1;
+      }
+      if (!r || isNaN(r)) {
+        roll.value = 1;
+        r = 1;
+      }
+      let cost = 0;
+      let spent = 0;
+      // calc table
+      rows.forEach(row => {
+        const info = getColumn(row);
+        const costMultiplier = info.costMultiplier;
+        const cumulativeCostMultiplier = info.cumulativeCostMultiplier;
+        const rollCost = formatNumber(costMultiplier * p);
+        const cumulativeCost = formatNumber(cumulativeCostMultiplier * p);
+        row.querySelector('td:nth-child(4)').innerText = rollCost;
+        row.querySelector('td:nth-child(5)').innerText = cumulativeCost;
+      });
+      // calc fields
+      if (r <= 37) {
+        // const row = rows[r - 1];
+        const info = getColumn(r - 1);
+        cost = info.rollCost;
+        spent = info.cumulativeCost;
+      } else {
+        const info = getColumn(36);
+        const diff = r - 37;
+        cost = info.rollCost + 30 * diff * p;
+        spent = info.cumulativeCost + diff * (info.rollCost + 30 * p);
+      }
+
+      ec.value = formatNumber(cost);
+      gs.value = formatNumber(spent);
+      roll.value = r;
+      price.value = p;
+    };
+    const selectAll = function () {
+      this.select();
+    };
+    price.addEventListener('change', calc);
+    price.addEventListener('keyup', calc);
+    price.addEventListener('focus', selectAll);
+    roll.addEventListener('change', calc);
+    roll.addEventListener('keyup', calc);
+    roll.addEventListener('focus', selectAll);
+    const handleDarkMode = () => {
+      const isDarkMode = document.body.classList.contains('dark');
+      if (isDarkMode) {
+        document.body.classList.remove('dark');
+        localStorage.removeItem('darkMode');
+      } else {
+        document.body.classList.add('dark');
+        localStorage.setItem('darkMode', 1);
+      }
+    };
+    document.getElementById('toggle-dark-mode').addEventListener('change', handleDarkMode);
+    const isDarkMode =
+      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+      || localStorage.getItem('darkMode');
+    document.body.classList.toggle('dark', isDarkMode);
+    document.getElementById('toggle-dark-mode').checked = isDarkMode;
+  </script>
+</body>
+
+</html>
