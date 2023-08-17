@@ -657,16 +657,16 @@
       const isDarkMode = document.body.classList.contains('dark');
       if (isDarkMode) {
         document.body.classList.remove('dark');
-        localStorage.removeItem('darkMode');
+        localStorage.setItem('darkMode', 0);
       } else {
         document.body.classList.add('dark');
         localStorage.setItem('darkMode', 1);
       }
     };
     document.getElementById('toggle-dark-mode').addEventListener('change', handleDarkMode);
-    const isDarkMode =
-      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      || localStorage.getItem('darkMode');
+    let isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const dark = localStorage.getItem('darkMode');
+    if (dark) isDarkMode = dark === '1';
     document.body.classList.toggle('dark', isDarkMode);
     document.getElementById('toggle-dark-mode').checked = isDarkMode;
   </script>
